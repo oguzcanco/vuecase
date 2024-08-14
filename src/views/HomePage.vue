@@ -169,10 +169,11 @@
     },
     methods: {
       addSelectedUsers() {
-        const selectedPosts = this.posts.filter(post => this.selectedPostIds.includes(post.id))
+        const selectedPosts = this.paginatedPosts.filter(post => this.selectedPostIds.includes(post.id));
         selectedPosts.forEach(post => {
-          this.$store.dispatch('addUser', post.user)
-        })
+            this.$store.dispatch('addUser', post.user);
+        });
+        this.selectedPostIds = [];
       },
       prevPage() {
         if (this.currentPage > 1) {

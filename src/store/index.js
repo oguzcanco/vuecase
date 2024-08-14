@@ -10,6 +10,13 @@ export default createStore({
     setPosts(state, posts) {
         state.posts = posts;
     },
+    addUser(state, user) {
+        if (!state.selectedUsers.some(u => u.id === user.id)) {
+          console.log("User added to store:", user);
+          state.selectedUsers.push(user);
+          localStorage.setItem('selectedUsers', JSON.stringify(state.selectedUsers)); // Kullanıcıları localStorage'a kaydediyoruz
+        }
+    },
   },
   actions: {
     fetchPosts({ commit }) {
@@ -53,7 +60,7 @@ export default createStore({
           });
     },
     addUser({ commit }, user) {
-      commit('addUser', user)
+        commit('addUser', user);
     },
   },
   getters: {
