@@ -73,14 +73,22 @@
         </table>
   
         <!-- Sayfalama -->
-        <div class="flex justify-between mt-6">
-          <button @click="prevPage" :disabled="currentPage === 1" class="bg-gray-500 text-white py-2 px-4 rounded-full shadow-md hover:bg-gray-600 disabled:opacity-50">
-            Önceki
-          </button>
-          <span class="self-center">Sayfa {{ currentPage }} / {{ totalPages }}</span>
-          <button @click="nextPage" :disabled="currentPage === totalPages" class="bg-gray-500 text-white py-2 px-4 rounded-full shadow-md hover:bg-gray-600 disabled:opacity-50">
-            Sonraki
-          </button>
+        <div class="flex justify-center mt-6 space-x-2">
+            <button @click="prevPage" :disabled="currentPage === 1" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 disabled:opacity-50">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.293 9.293a1 1 0 010 1.414l-4 4a1 1 0 11-1.414-1.414L9.586 10 6.293 6.707a1 1 0 011.414-1.414l4 4z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            
+            <button v-for="page in totalPages" :key="page" @click="currentPage = page" :class="{'bg-blue-500 text-white': currentPage === page, 'bg-gray-200 text-gray-700': currentPage !== page}" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-blue-500 hover:text-white">
+                {{ page }}
+            </button>
+            
+            <button @click="nextPage" :disabled="currentPage === totalPages" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 disabled:opacity-50">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.707 9.293a1 1 0 000 1.414l4 4a1 1 0 001.414-1.414L10.414 10l3.707-3.707a1 1 0 00-1.414-1.414l-4 4z" clip-rule="evenodd" />
+                </svg>
+            </button>
         </div>
       </div>
     </div>
