@@ -33,17 +33,17 @@
 </template>
   
 <script>
-  import axios from 'axios'
-  
   export default {
     data() {
       return {
-        posts: [],
         selectedPostIds: [],
         searchQuery: '',
       }
     },
     computed: {
+      posts() {
+        return this.$store.getters.getPosts
+      },
       filteredPosts() {
         return this.posts.filter(post => post.user.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
       }
@@ -61,12 +61,7 @@
       }
     },
     mounted() {
-      axios.get('https://jsonplaceholder.typicode.com/posts').then(response => {
-        this.posts = response.data.map(post => {
-          post.user = { name: `User ${post.userId}` }
-          return post
-        })
-      })
+      this.$store.dispatch('fetchPosts') // Vuex'ten verileri çekiyoruz
     }
   }
 </script>

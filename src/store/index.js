@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import axios from 'axios';
 
 export default createStore({
   state: {
@@ -11,6 +12,19 @@ export default createStore({
     },
   },
   actions: {
+    fetchPosts({ commit }) {
+      axios.get('https://jsonplaceholder.typicode.com/posts')
+        .then(response => {
+          const posts = response.data.map(post => {
+            post.user = { name: `User ${post.userId}` }
+            return post
+          })
+          commit('setPosts', posts)
+        })
+        .catch(error => {
+          console.error("Error fetching posts:", error)
+        })
+    },
     addUser({ commit }, user) {
       commit('addUser', user)
     },
