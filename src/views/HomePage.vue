@@ -31,11 +31,11 @@
           <thead class="bg-gray-100">
             <tr>
               <th class="py-3 px-6 text-left text-gray-700">
-                <span class="flex items-center">
-                  ID
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                <span class="flex items-center cursor-pointer" @click="sortBy('id')">
+                    ID
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M5.292 7.707a1 1 0 011.415 0L10 11.586l3.293-3.879a1 1 0 011.415 1.415l-4 4.67a1 1 0 01-1.415 0l-4-4.67a1 1 0 010-1.415z" clip-rule="evenodd" />
-                  </svg>
+                    </svg>
                 </span>
               </th>
               <th class="py-3 px-6 text-left text-gray-700">İsim Soyisim</th>
@@ -89,19 +89,38 @@
         SideBar, // Sidebar'ı kullanıma alıyoruz
     },
     data() {
-      return {
-        selectedPostIds: [],
-        searchQuery: '',
-        currentPage: 1,
-        rowsPerPage: 10, // Sayfa başına gösterilecek satır sayısı
-      }
+        return {
+            selectedPostIds: [],
+            searchQuery: '',
+            currentPage: 1,
+            rowsPerPage: 5,
+            sortOrder: 'asc', // Sıralama yönü: 'asc' veya 'desc'
+            sortField: 'id', // Sıralama yapılacak alan
+        }
     },
     computed: {
       posts() {
         return this.$store.getters.getPosts
       },
       filteredPosts() {
-        return this.posts.filter(post => post.user.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
+        let sortedPosts = [...this.posts];
+
+        // Sıralama işlemi
+        sortedPosts.sort((a, b) => {
+        let result = 0;
+
+        if (a[this.sortField] < b[this.sortField]) {
+            result = -1;
+        } else if (a[this.sortField] > b[this.sortField]) {
+            result = 1;
+        }
+
+        return this.sortOrder === 'asc' ? result : -result;
+        });
+
+        return sortedPosts.filter(post =>
+        post.user.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
       },
       paginatedPosts() {
         const start = (Number(this.currentPage) - 1) * Number(this.rowsPerPage);
@@ -141,6 +160,16 @@
       nextPage() {
         if (this.currentPage < this.totalPages) {
           this.currentPage++;
+        }
+      },
+      sortBy(field) {
+        if (this.sortField === field) {
+        // Aynı alana tekrar tıklanırsa, sıralama yönünü tersine çevir
+        this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+        } else {
+        // Yeni bir alan sıralandığında, sıralama yönünü 'asc' olarak başlat
+        this.sortField = field;
+        this.sortOrder = 'asc';
         }
       }
     },
