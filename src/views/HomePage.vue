@@ -55,24 +55,24 @@
                 <!-- Expandable Content -->
                 <tr v-show="post.expanded" v-for="post in paginatedPosts" :key="post.id + '-expanded'" class="bg-gray-50">
                     <td colspan="6" class="py-3 px-6">
-                    <!-- Expand edilen içeriğin düzenlenmesi -->
-                    <div class="flex items-start space-x-6">
-                        <img :src="post.user.profilePicture" alt="User Image" class="h-20 w-20 rounded-full border border-gray-300 shadow-lg">
+                        <!-- Expand edilen içeriğin düzenlenmesi -->
+                        <div class="flex items-start space-x-4">
+                        <img :src="post.user.profilePicture" alt="User Image" class="h-16 w-16 rounded-full border border-gray-200 shadow-sm">
                         <div>
-                        <p class="text-xl font-semibold">{{ post.user.fullname }}</p> <!-- fullname kullanılıyor -->
-                        <p class="text-sm text-gray-500">{{ post.user.email }}</p>
-                        <p class="text-sm text-gray-500">{{ post.user.birthDate }}</p>
-                        <p class="text-sm text-gray-500">{{ post.user.phone }}</p>
+                            <p class="text-lg font-semibold">{{ post.user.fullname }}</p> <!-- fullname kullanılıyor -->
+                            <p class="text-sm text-gray-600">{{ post.user.email }}</p>
+                            <p class="text-sm text-gray-600">{{ post.user.birthDate }}</p>
+                            <p class="text-sm text-gray-600">{{ post.user.phone }}</p>
                         </div>
-                    </div>
-                    <div class="mt-4 border-t border-gray-200 pt-4">
-                        <p class="text-lg font-bold">{{ post.title }}</p>
+                        </div>
+                        <div class="mt-4">
+                        <p class="font-bold text-lg">{{ post.title }}</p>
                         <p class="text-gray-700">{{ post.content }}</p>
-                    </div>
+                        </div>
                     </td>
                 </tr>
-                </tbody>
-            </table>
+            </tbody>
+        </table>
   
         <!-- Sayfalama -->
         <div class="flex justify-center mt-6 space-x-2">
