@@ -16,7 +16,7 @@
       <table class="min-w-full bg-white border-collapse shadow-md rounded-lg overflow-hidden">
         <thead class="bg-gray-100">
           <tr>
-            <th class="py-3 px-6 text-left text-gray-700">ID</th>
+            <th class="py-3 px-6 text-left text-gray-700">User ID</th>
             <th class="py-3 px-6 text-left text-gray-700">İsim Soyisim</th>
             <th class="py-3 px-6 text-left text-gray-700">E-posta</th>
             <th class="py-3 px-6 text-left text-gray-700">Doğum Tarihi</th>

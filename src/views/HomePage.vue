@@ -29,7 +29,7 @@
                 <tr>
                     <th class="py-3 px-6 text-left text-gray-700">
                         <span class="flex items-center cursor-pointer" @click="sortBy('id')">
-                        ID
+                        Post ID
                         <ArrowDownIcon v-if="sortOrder === 'asc'" class="h-4 w-4 ml-2 text-gray-500" />
                         <ArrowUpIcon v-else class="h-4 w-4 ml-2 text-gray-500" /> <!-- Icon bileşeni kullanılıyor -->
                         </span>
@@ -88,14 +88,18 @@
             <ArrowRightIcon class="h-4 w-4 text-gray-600" /> <!-- Icon bileşeni kullanılıyor -->
           </button>
         </div>
+
+        <!-- Notification Component -->
+        <NotificationComp v-if="notificationMessage" :message="notificationMessage" />
       </div>
     </div>
-  </template>
+</template>
   
-  <script>
+<script>
   import { ArrowRightIcon, ArrowLeftIcon, ArrowUpIcon, ArrowDownIcon, UserIcon } from '@heroicons/vue/20/solid';
   import SideBar from '@/components/SideBar.vue'; // Sidebar component'ini import ediyoruz
-  
+  import NotificationComp from '@/components/NotificationComp.vue';
+
   export default {
     components: {
       SideBar, // Sidebar'ı kullanıma alıyoruz
@@ -104,6 +108,7 @@
       ArrowUpIcon, // İkon bileşenini tanımlıyoruz
       ArrowDownIcon, // İkon bileşenini tanımlıyoruz
       UserIcon, // İkon bileşenini tanımlıyoruz
+      NotificationComp
     },
     data() {
       return {
@@ -113,6 +118,7 @@
         rowsPerPage: 5,
         sortOrder: 'asc', // Sıralama yönü: 'asc' veya 'desc'
         sortField: 'id', // Sıralama yapılacak alan
+        notificationMessage: '',
       }
     },
     computed: {
@@ -174,6 +180,7 @@
             this.$store.dispatch('addUser', post.user);
         });
         this.selectedPostIds = [];
+        this.showNotification('Kullanıcılar başarıyla eklendi.');
       },
       prevPage() {
         if (this.currentPage > 1) {
@@ -203,7 +210,13 @@
         
         // Sadece tıklanan postun expanded özelliğini tersine çeviriyoruz
         post.expanded = !post.expanded;
-      }
+      },
+      showNotification(message) {
+        this.notificationMessage = message;
+        setTimeout(() => {
+            this.notificationMessage = '';
+        }, 4000); 
+      },
     },
     mounted() {
       this.$store.dispatch('fetchPosts') // Vuex'ten verileri çekiyoruz
