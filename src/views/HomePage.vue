@@ -25,54 +25,54 @@
   
         <!-- Data Table -->
         <table class="min-w-full bg-white border-collapse shadow-md rounded-lg overflow-hidden">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="py-3 px-6 text-left text-gray-700">
-                <span class="flex items-center cursor-pointer" @click="sortBy('id')">
-                  ID
-                  <ArrowDownIcon v-if="sortOrder === 'asc'" class="h-4 w-4 ml-2 text-gray-500" />
-                  <ArrowUpIcon v-else class="h-4 w-4 ml-2 text-gray-500" /> <!-- Icon bileşeni kullanılıyor -->
-                </span>
-              </th>
-              <th class="py-3 px-6 text-left text-gray-700">İsim Soyisim</th>
-              <th class="py-3 px-6 text-left text-gray-700">Başlık</th>
-              <th class="py-3 px-6 text-left text-gray-700">Kategori</th>
-              <th class="py-3 px-6 text-left text-gray-700">Son Güncelleme</th>
-              <th class="py-3 px-6 text-center text-gray-700"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="post in paginatedPosts" :key="post.id" :class="{ 'bg-gray-50': post.id % 2 === 0, 'bg-green-100': selectedPostIds.includes(post.id) }" class="hover:bg-gray-100 cursor-pointer" @click="toggleExpand(post)">
-              <td class="py-3 px-6">{{ post.id }}</td>
-              <td class="py-3 px-6">{{ post.user.name }}</td>
-              <td class="py-3 px-6">{{ post.title }}</td>
-              <td class="py-3 px-6">Lorem</td>
-              <td class="py-3 px-6">17 Mart</td>
-              <td class="py-3 px-6 text-center">
-                <input type="checkbox" v-model="selectedPostIds" :value="post.id" class="form-checkbox h-4 w-4 text-blue-500">
-              </td>
-            </tr>
-            <!-- Expandable Content -->
-            <tr v-show="post.expanded" v-for="post in paginatedPosts" :key="post.id + '-expanded'" class="bg-gray-50">
-              <td colspan="6" class="py-3 px-6">
-                <!-- Buraya expand edilen içeriği ekleyin -->
-                <div class="flex items-center">
-                  <img src="path-to-your-image" alt="User Image" class="h-12 w-12 rounded-full mr-4">
-                  <div>
-                    <p class="font-bold">{{ post.user.name }}</p>
-                    <p>{{ post.user.email }}</p>
-                    <p>{{ post.user.phone }}</p>
-                    <p>{{ post.user.address }}</p>
-                  </div>
-                </div>
-                <div class="mt-4">
-                  <p class="font-bold">{{ post.title }}</p>
-                  <p>{{ post.content }}</p>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="py-3 px-6 text-left text-gray-700">
+                        <span class="flex items-center cursor-pointer" @click="sortBy('id')">
+                        ID
+                        <ArrowDownIcon v-if="sortOrder === 'asc'" class="h-4 w-4 ml-2 text-gray-500" />
+                        <ArrowUpIcon v-else class="h-4 w-4 ml-2 text-gray-500" /> <!-- Icon bileşeni kullanılıyor -->
+                        </span>
+                    </th>
+                    <th class="py-3 px-6 text-left text-gray-700">İsim Soyisim</th>
+                    <th class="py-3 px-6 text-left text-gray-700">Başlık</th>
+                    <th class="py-3 px-6 text-left text-gray-700">Kategori</th>
+                    <th class="py-3 px-6 text-left text-gray-700">Son Güncelleme</th>
+                    <th class="py-3 px-6 text-center text-gray-700"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="post in paginatedPosts" :key="post.id" :class="{ 'bg-gray-50': post.id % 2 === 0, 'bg-green-100': selectedPostIds.includes(post.id) }" class="hover:bg-gray-100 cursor-pointer" @click="toggleExpand(post)">
+                    <td class="py-3 px-6">{{ post.id }}</td>
+                    <td class="py-3 px-6">{{ post.user.fullname }}</td> <!-- fullname kullanılıyor -->
+                    <td class="py-3 px-6">{{ post.title }}</td>
+                    <td class="py-3 px-6">{{ post.category }}</td>
+                    <td class="py-3 px-6">{{ post.updatedAt }}</td>
+                    <td class="py-3 px-6 text-center">
+                    <input type="checkbox" v-model="selectedPostIds" :value="post.id" class="form-checkbox h-4 w-4 text-blue-500" @click.stop>
+                    </td>
+                </tr>
+                <!-- Expandable Content -->
+                <tr v-show="post.expanded" v-for="post in paginatedPosts" :key="post.id + '-expanded'" class="bg-gray-50">
+                    <td colspan="6" class="py-3 px-6">
+                    <!-- Expand edilen içeriğin düzenlenmesi -->
+                    <div class="flex items-start space-x-6">
+                        <img :src="post.user.profilePicture" alt="User Image" class="h-20 w-20 rounded-full border border-gray-300 shadow-lg">
+                        <div>
+                        <p class="text-xl font-semibold">{{ post.user.fullname }}</p> <!-- fullname kullanılıyor -->
+                        <p class="text-sm text-gray-500">{{ post.user.email }}</p>
+                        <p class="text-sm text-gray-500">{{ post.user.birthDate }}</p>
+                        <p class="text-sm text-gray-500">{{ post.user.phone }}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 border-t border-gray-200 pt-4">
+                        <p class="text-lg font-bold">{{ post.title }}</p>
+                        <p class="text-gray-700">{{ post.content }}</p>
+                    </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
   
         <!-- Sayfalama -->
         <div class="flex justify-center mt-6 space-x-2">
@@ -116,55 +116,56 @@
       }
     },
     computed: {
-      posts() {
-        return this.$store.getters.getPosts
-      },
-      filteredPosts() {
-        let sortedPosts = [...this.posts];
-  
-        // Sıralama işlemi
-        sortedPosts.sort((a, b) => {
-          let result = 0;
-  
-          if (a[this.sortField] < b[this.sortField]) {
-            result = -1;
-          } else if (a[this.sortField] > b[this.sortField]) {
-            result = 1;
-          }
-  
-          return this.sortOrder === 'asc' ? result : -result;
-        });
-  
-        return sortedPosts.filter(post =>
-          post.user.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-        );
-      },
-      paginatedPosts() {
-        const start = (Number(this.currentPage) - 1) * Number(this.rowsPerPage);
-        const end = start + Number(this.rowsPerPage);
-        
-        return this.filteredPosts.slice(start, end);
-      },
-      totalPages() {
-        // Toplam sayfa sayısını hesaplayın
-        return Math.ceil(this.filteredPosts.length / this.rowsPerPage);
-      }
+        posts() {
+            return this.$store.getters.getPosts
+        },
+        filteredPosts() {
+            let sortedPosts = [...this.posts];
+
+            // Sıralama işlemi
+            sortedPosts.sort((a, b) => {
+                let result = 0;
+
+                if (a[this.sortField] < b[this.sortField]) {
+                result = -1;
+                } else if (a[this.sortField] > b[this.sortField]) {
+                result = 1;
+                }
+
+                return this.sortOrder === 'asc' ? result : -result;
+            });
+
+            // Filtreleme işlemi
+            return sortedPosts.filter(post =>
+                post.user.fullname.toLowerCase().includes(this.searchQuery.toLowerCase()) // fullname ile arama yapılıyor
+            );
+        },
+        paginatedPosts() {
+            const start = (Number(this.currentPage) - 1) * Number(this.rowsPerPage);
+            const end = start + Number(this.rowsPerPage);
+            
+            return this.filteredPosts.slice(start, end);
+        },
+        totalPages() {
+            // Toplam sayfa sayısını hesaplayın
+            return Math.ceil(this.filteredPosts.length / this.rowsPerPage);
+        }
     },
     watch: {
-      rowsPerPage() {
-        // rowsPerPage değiştiğinde currentPage'i sıfırla
-        this.currentPage = 1;
-      },
-      filteredPosts() {
-        // Veriler değiştiğinde currentPage'i sıfırla
-        this.currentPage = 1;
-      },
-      currentPage() {
-        // currentPage geçerli bir sayfa aralığında değilse ayarlayın
-        if (this.currentPage > this.totalPages) {
-          this.currentPage = this.totalPages;
+        rowsPerPage() {
+            // rowsPerPage değiştiğinde currentPage'i sıfırla
+            this.currentPage = 1;
+        },
+        filteredPosts() {
+            // Veriler değiştiğinde currentPage'i sıfırla
+            this.currentPage = 1;
+        },
+        currentPage() {
+            // currentPage geçerli bir sayfa aralığında değilse ayarlayın
+            if (this.currentPage > this.totalPages) {
+                this.currentPage = this.totalPages;
+            }
         }
-      }
     },
     methods: {
       addSelectedUsers() {
@@ -175,26 +176,32 @@
       },
       prevPage() {
         if (this.currentPage > 1) {
-          this.currentPage--;
+            this.currentPage--;
         }
       },
       nextPage() {
         if (this.currentPage < this.totalPages) {
-          this.currentPage++;
+            this.currentPage++;
         }
       },
       sortBy(field) {
         if (this.sortField === field) {
-          // Aynı alana tekrar tıklanırsa, sıralama yönünü tersine çevir
-          this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+            // Aynı alana tekrar tıklanırsa, sıralama yönünü tersine çevir
+            this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
         } else {
-          // Yeni bir alan sıralandığında, sıralama yönünü 'asc' olarak başlat
-          this.sortField = field;
-          this.sortOrder = 'asc';
+            // Yeni bir alan sıralandığında, sıralama yönünü 'asc' olarak başlat
+            this.sortField = field;
+            this.sortOrder = 'asc';
         }
       },
       toggleExpand(post) {
-        this.$set(post, 'expanded', !post.expanded);
+        // Tüm postların expanded özelliğini false yaparak diğer genişletilmiş satırları kapatıyoruz
+        this.posts.forEach(p => {
+            p.expanded = false;
+        });
+        
+        // Sadece tıklanan postun expanded özelliğini tersine çeviriyoruz
+        post.expanded = !post.expanded;
       }
     },
     mounted() {

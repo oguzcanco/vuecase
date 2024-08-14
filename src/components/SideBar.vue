@@ -4,17 +4,13 @@
       <ul class="space-y-4">
         <li>
           <router-link to="/" class="block py-2 px-4 text-gray-700 hover:bg-gray-200 rounded flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18m-9 5h9" />
-            </svg>
+            <HomeIcon class="h-5 w-5 mr-2" /> <!-- Icon bileşeni kullanılıyor -->
             Gönderiler
           </router-link>
         </li>
         <li>
           <router-link to="/users" class="block py-2 px-4 text-gray-700 hover:bg-gray-200 rounded flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16m-7 4h7" />
-            </svg>
+            <UserIcon class="h-5 w-5 mr-2" /> <!-- Icon bileşeni kullanılıyor -->
             Kullanıcılar
           </router-link>
         </li>
@@ -23,11 +19,17 @@
 </template>
   
 <script>
-  export default {
-    name: 'SideBar'
-  }
+    import { UserIcon, HomeIcon } from '@heroicons/vue/20/solid';
+
+    export default {
+        name: 'SideBar',
+        components: {
+            HomeIcon,
+            UserIcon
+        }
+    }
 </script>
-  
+
 <style scoped>
 /* Stil ekleyebilirsin */
 </style>

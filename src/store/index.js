@@ -13,17 +13,44 @@ export default createStore({
   },
   actions: {
     fetchPosts({ commit }) {
-      axios.get('https://jsonplaceholder.typicode.com/posts')
-        .then(response => {
-          const posts = response.data.map(post => {
-            post.user = { name: `User ${post.userId}` }
-            return post
+        // Öncelikle post verilerini alıyoruz
+        axios.get('https://jsonplaceholder.org/posts')
+          .then(response => {
+            const posts = response.data;
+    
+            // Tüm kullanıcıları alıyoruz
+            axios.get('https://jsonplaceholder.org/users')
+              .then(userResponse => {
+                const users = userResponse.data;
+    
+                // Postlara kullanıcıları atıyoruz
+                const postsWithUsers = posts.map(post => {
+                  const user = users[post.userId % users.length];
+    
+                  // Rastgele erkek ya da kadın resmi seçmek için
+                  const gender = Math.random() > 0.5 ? 'men' : 'women';
+                  const randomImageUrl = `https://randomuser.me/api/portraits/${gender}/${user.id % 100}.jpg`;
+  
+                  const fullname = `${user.firstname} ${user.lastname}`;
+    
+                  post.user = {
+                    ...user,
+                    fullname: fullname, // fullname'i ekliyoruz
+                    profilePicture: randomImageUrl // Kullanıcının profil resmini ekliyoruz
+                  };
+                  return post;
+                });
+    
+                // Store'a verileri commit ediyoruz
+                commit('setPosts', postsWithUsers);
+              })
+              .catch(error => {
+                console.error("Error fetching users:", error);
+              });
           })
-          commit('setPosts', posts)
-        })
-        .catch(error => {
-          console.error("Error fetching posts:", error)
-        })
+          .catch(error => {
+            console.error("Error fetching posts:", error);
+          });
     },
     addUser({ commit }, user) {
       commit('addUser', user)
