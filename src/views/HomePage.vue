@@ -83,7 +83,7 @@
         <div class="flex justify-center mt-6 space-x-2">
             <button @click="prevPage" :disabled="currentPage === 1" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 disabled:opacity-50">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M12.293 9.293a1 1 0 010 1.414l-4 4a1 1 0 11-1.414-1.414L9.586 10 6.293 6.707a1 1 0 011.414-1.414l4 4z" clip-rule="evenodd" />
+                <path fill-rule="evenodd" d="M7.707 9.293a1 1 0 000 1.414l4 4a1 1 0 001.414-1.414L10.414 10l3.707-3.707a1 1 0 00-1.414-1.414l-4 4z" clip-rule="evenodd" />
                 </svg>
             </button>
             
@@ -93,7 +93,7 @@
             
             <button @click="nextPage" :disabled="currentPage === totalPages" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 disabled:opacity-50">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M7.707 9.293a1 1 0 000 1.414l4 4a1 1 0 001.414-1.414L10.414 10l3.707-3.707a1 1 0 00-1.414-1.414l-4 4z" clip-rule="evenodd" />
+                <path fill-rule="evenodd" d="M12.293 9.293a1 1 0 010 1.414l-4 4a1 1 0 11-1.414-1.414L9.586 10 6.293 6.707a1 1 0 011.414-1.414l4 4z" clip-rule="evenodd" />
                 </svg>
             </button>
         </div>
@@ -119,13 +119,27 @@
         return this.posts.filter(post => post.user.name.toLowerCase().includes(this.searchQuery.toLowerCase()))
       },
       paginatedPosts() {
-        const start = (this.currentPage - 1) * this.rowsPerPage;
-        const end = start + this.rowsPerPage;
+        const start = (Number(this.currentPage) - 1) * Number(this.rowsPerPage);
+        const end = start + Number(this.rowsPerPage);
+        
+        // Debugging için eklenen loglar
+        console.log('Start:', start, 'End:', end, 'Filtered Length:', this.filteredPosts.length);
+        
         return this.filteredPosts.slice(start, end);
       },
       totalPages() {
         return Math.ceil(this.filteredPosts.length / this.rowsPerPage);
       }
+    },
+    watch: {
+        rowsPerPage() {
+            // rowsPerPage değiştiğinde currentPage'i sıfırla
+            this.currentPage = 1;
+        },
+        filteredPosts() {
+            // Veriler değiştiğinde currentPage'i sıfırla
+            this.currentPage = 1;
+        },
     },
     methods: {
       addSelectedUsers() {
