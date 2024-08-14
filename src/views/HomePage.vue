@@ -9,10 +9,7 @@
         <div class="flex justify-between mb-4">
           <div>
             <button @click="addSelectedUsers" class="bg-blue-500 text-white py-2 px-4 rounded-full flex items-center shadow-lg hover:bg-blue-600">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M8 9a3 3 0 116 0 3 3 0 01-6 0z" />
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12z" clip-rule="evenodd" />
-              </svg>
+              <UserIcon class="h-5 w-5 mr-2" /> <!-- Icon bileşeni kullanılıyor -->
               Kullanıcı Ekle
             </button>
           </div>
@@ -33,9 +30,8 @@
               <th class="py-3 px-6 text-left text-gray-700">
                 <span class="flex items-center cursor-pointer" @click="sortBy('id')">
                   ID
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M5.292 7.707a1 1 0 011.415 0L10 11.586l3.293-3.879a1 1 0 011.415 1.415l-4 4.67a1 1 0 01-1.415 0l-4-4.67a1 1 0 010-1.415z" clip-rule="evenodd" />
-                  </svg>
+                  <ArrowDownIcon v-if="sortOrder === 'asc'" class="h-4 w-4 ml-2 text-gray-500" />
+                  <ArrowUpIcon v-else class="h-4 w-4 ml-2 text-gray-500" /> <!-- Icon bileşeni kullanılıyor -->
                 </span>
               </th>
               <th class="py-3 px-6 text-left text-gray-700">İsim Soyisim</th>
@@ -57,22 +53,21 @@
               </td>
             </tr>
             <!-- Expandable Content -->
-            <tr v-for="expandedPost in expandedPosts" :key="expandedPost.id + '-expanded'" class="bg-gray-50">
-              <td colspan="6" class="p-4">
-                <div class="flex">
-                  <div class="mr-4">
-                    <img src="path-to-image.jpg" alt="User Image" class="w-16 h-16 rounded-full">
-                  </div>
+            <tr v-show="post.expanded" v-for="post in paginatedPosts" :key="post.id + '-expanded'" class="bg-gray-50">
+              <td colspan="6" class="py-3 px-6">
+                <!-- Buraya expand edilen içeriği ekleyin -->
+                <div class="flex items-center">
+                  <img src="path-to-your-image" alt="User Image" class="h-12 w-12 rounded-full mr-4">
                   <div>
-                    <h3 class="text-lg font-bold">{{ expandedPost.user.name }}</h3>
-                    <p>{{ expandedPost.user.email }}</p>
-                    <p>{{ expandedPost.user.date_of_birth }}</p>
-                    <p>{{ expandedPost.user.phone }}</p>
+                    <p class="font-bold">{{ post.user.name }}</p>
+                    <p>{{ post.user.email }}</p>
+                    <p>{{ post.user.phone }}</p>
+                    <p>{{ post.user.address }}</p>
                   </div>
-                  <div class="ml-auto">
-                    <p>{{ expandedPost.title }}</p>
-                    <p>{{ expandedPost.content }}</p>
-                  </div>
+                </div>
+                <div class="mt-4">
+                  <p class="font-bold">{{ post.title }}</p>
+                  <p>{{ post.content }}</p>
                 </div>
               </td>
             </tr>
@@ -82,9 +77,7 @@
         <!-- Sayfalama -->
         <div class="flex justify-center mt-6 space-x-2">
           <button @click="prevPage" :disabled="currentPage === 1" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 disabled:opacity-50">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M7.707 9.293a1 1 0 000 1.414l4 4a1 1 0 001.414-1.414L10.414 10l3.707-3.707a1 1 0 00-1.414-1.414l-4 4z" clip-rule="evenodd" />
-            </svg>
+            <ArrowLeftIcon class="h-4 w-4 text-gray-600" /> <!-- Icon bileşeni kullanılıyor -->
           </button>
           
           <button v-for="page in totalPages" :key="page" @click="currentPage = page" :class="{'bg-blue-500 text-white': currentPage === page, 'bg-gray-200 text-gray-700': currentPage !== page}" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-blue-500 hover:text-white">
@@ -92,9 +85,7 @@
           </button>
           
           <button @click="nextPage" :disabled="currentPage === totalPages" class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 disabled:opacity-50">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M12.293 9.293a1 1 0 010 1.414l-4 4a1 1 0 11-1.414-1.414L9.586 10 6.293 6.707a1 1 0 011.414-1.414l4 4z" clip-rule="evenodd" />
-            </svg>
+            <ArrowRightIcon class="h-4 w-4 text-gray-600" /> <!-- Icon bileşeni kullanılıyor -->
           </button>
         </div>
       </div>
@@ -102,11 +93,17 @@
   </template>
   
   <script>
+  import { ArrowRightIcon, ArrowLeftIcon, ArrowUpIcon, ArrowDownIcon, UserIcon } from '@heroicons/vue/20/solid';
   import SideBar from '@/components/SideBar.vue'; // Sidebar component'ini import ediyoruz
   
   export default {
     components: {
       SideBar, // Sidebar'ı kullanıma alıyoruz
+      ArrowRightIcon, // İkon bileşenini tanımlıyoruz
+      ArrowLeftIcon, // İkon bileşenini tanımlıyoruz
+      ArrowUpIcon, // İkon bileşenini tanımlıyoruz
+      ArrowDownIcon, // İkon bileşenini tanımlıyoruz
+      UserIcon, // İkon bileşenini tanımlıyoruz
     },
     data() {
       return {
@@ -147,9 +144,6 @@
         const end = start + Number(this.rowsPerPage);
         
         return this.filteredPosts.slice(start, end);
-      },
-      expandedPosts() {
-        return this.paginatedPosts.filter(post => post.expanded);
       },
       totalPages() {
         // Toplam sayfa sayısını hesaplayın
@@ -200,7 +194,7 @@
         }
       },
       toggleExpand(post) {
-        post.expanded = !post.expanded;
+        this.$set(post, 'expanded', !post.expanded);
       }
     },
     mounted() {
