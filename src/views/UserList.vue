@@ -68,14 +68,25 @@ export default {
       rowsPerPage: 10, // Sayfa başına gösterilecek kullanıcı sayısı
     }
   },
+  mounted() {
+    const selectedUsers = this.$store.dispatch('loadUsers'); // LocalStorage'dan kullanıcıları yükler
+    console.log("Selected Users in Store on Users.vue Mounted:", selectedUsers);
+  },
   computed: {
     selectedUsers() {
-      return this.$store.getters.getSelectedUsers;
+      // Store'dan kullanıcıları alıyoruz
+      const users = this.$store.getters.getSelectedUsers;
+      console.log("Selected Users in Users.vue:", users);
+      return users;
     },
     paginatedUsers() {
       const start = (Number(this.currentPage) - 1) * Number(this.rowsPerPage);
       const end = start + Number(this.rowsPerPage);
-      return this.selectedUsers.slice(start, end);
+      
+      const paginated = this.selectedUsers.slice(start, end);
+      console.log("Paginated Users in Users.vue:", paginated);
+      
+      return paginated;
     },
     totalPages() {
       return Math.ceil(this.selectedUsers.length / this.rowsPerPage);

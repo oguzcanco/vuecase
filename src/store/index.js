@@ -17,6 +17,12 @@ export default createStore({
           localStorage.setItem('selectedUsers', JSON.stringify(state.selectedUsers)); // Kullanıcıları localStorage'a kaydediyoruz
         }
     },
+    loadUsers(state) {
+        const users = JSON.parse(localStorage.getItem('selectedUsers'));
+        if (users) {
+          state.selectedUsers = users;
+        }
+    },
   },
   actions: {
     fetchPosts({ commit }) {
@@ -62,13 +68,16 @@ export default createStore({
     addUser({ commit }, user) {
         commit('addUser', user);
     },
+    loadUsers({ commit }) {
+        commit('loadUsers');
+    }
   },
   getters: {
     getPosts(state) {
       return state.posts;
     },
     getSelectedUsers(state) {
-      return state.selectedUsers;
+        return state.selectedUsers;
     }
   },
   modules: {},
